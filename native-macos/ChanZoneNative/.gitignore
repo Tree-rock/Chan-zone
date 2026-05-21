@@ -1,0 +1,6 @@
+.build/
+.build-local/
+.clang-cache/
+.swiftpm-cache/
+.swiftpm/
+DerivedData/

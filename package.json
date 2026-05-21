@@ -1,0 +1,29 @@
+{
+  "name": "chan-zone",
+  "version": "1.0.0",
+  "description": "Chan zone · Zen Pomodoro Timer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^32.3.3",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.chanzone.pomodoro",
+    "productName": "Chan zone",
+    "icon": "build/icon.icns",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.icns",
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Chan Zone needs permission to add completed focus sessions to Calendar.",
+        "NSCalendarsUsageDescription": "Chan Zone needs calendar access to save completed focus sessions.",
+        "NSCalendarsFullAccessUsageDescription": "Chan Zone needs calendar access to save completed focus sessions."
+      },
+      "target": [{ "target": "dir", "arch": ["arm64"] }]
+    }
+  }
+}

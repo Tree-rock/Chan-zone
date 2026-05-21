@@ -1,0 +1,14 @@
+<svg width="1024" height="1024" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="150" height="150" rx="34" fill="#f2ede4" stroke="#ddd8cc" stroke-width="1"/>
+  <rect x="18" y="18" width="114" height="114" rx="4" fill="#f2ede4" fill-opacity="0.01" stroke="#3a5e72" stroke-width="2.5" opacity=".55"/>
+  <rect x="22" y="22" width="106" height="106" rx="2" fill="#f2ede4" fill-opacity="0.01" stroke="#3a5e72" stroke-width="1" opacity=".25"/>
+  <text x="36" y="44" text-anchor="middle" font-family="serif" font-size="20" fill="#2a4858" opacity=".7">禅</text>
+  <path d="M34 108 Q66 118 98 108 Q96 122 66 126 Q36 122 34 108 Z" fill="#f2ede4" fill-opacity="0.01" stroke="#2a4858" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26 118 Q50 114 74 118 Q86 121 100 118" fill="#f2ede4" fill-opacity="0.01" stroke="#5a8898" stroke-width="1" stroke-linecap="round" opacity=".45"/>
+  <path d="M24 124 Q52 120 76 124 Q90 127 104 124" fill="#f2ede4" fill-opacity="0.01" stroke="#5a8898" stroke-width="1" stroke-linecap="round" opacity=".35"/>
+  <path d="M62 108 Q58 96 60 88 Q64 82 68 82 Q72 82 74 88 Q76 96 72 108" fill="#f2ede4" fill-opacity="0.01" stroke="#2a4858" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="56" y1="85" x2="80" y2="85" stroke="#2a4858" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M56 85 Q68 70 80 85" fill="#f2ede4" fill-opacity="0.01" stroke="#2a4858" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M74 88 Q84 96 86 112" stroke="#2a4858" stroke-width="2" stroke-linecap="round" fill="#f2ede4" fill-opacity="0.01"/>
+  <path d="M82 108 Q90 112 88 118" stroke="#2a4858" stroke-width="1.4" stroke-linecap="round" fill="#f2ede4" fill-opacity="0.01"/>
+</svg>
