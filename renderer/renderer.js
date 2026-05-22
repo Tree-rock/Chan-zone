@@ -50,48 +50,17 @@ let sessionStart = null;
 
 const CIRC_PROGRESS = 2 * Math.PI * 86;   // r=86 for progress ring
 
-// ── AudioContext (persistent, resume on any interaction) ─────────────────────
-let audioCtx = null;
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return audioCtx;
-}
-// 每次点击都尝试 resume，防止长时间静默后 ctx 被挂起
-document.addEventListener('click', () => {
-  try { const ctx = getAudioCtx(); if (ctx.state !== 'running') ctx.resume(); } catch (_) {}
-});
-
-async function ensureAudio() {
-  const ctx = getAudioCtx();
-  try { await ctx.resume(); } catch (_) {}
-  return ctx;
-}
-
-// ── 音频缓冲：懒加载，首次使用时解码并缓存 ─────────────────────────────────────
-const _audioBufs = {};
-async function loadBuf(name, path) {
-  if (_audioBufs[name]) return _audioBufs[name];
+// ── 音频：直接用 HTMLAudioElement，无需管理 AudioContext 状态 ─────────────────
+function playSound(filePath, volume = 1.0) {
   try {
-    const ctx = getAudioCtx();
-    const res = await fetch(path);
-    const ab  = await res.arrayBuffer();
-    _audioBufs[name] = await ctx.decodeAudioData(ab);
-    return _audioBufs[name];
+    const a = new Audio(filePath);
+    a.volume = volume;
+    a.play().catch(e => console.warn('播放失败:', filePath, e));
+    return a;
   } catch (e) {
-    console.warn('音频加载失败:', path, e);
+    console.warn('音频错误:', e);
     return null;
   }
-}
-function playBuf(buf, when = 0, gain = 1.0) {
-  if (!buf) return;
-  const ctx = getAudioCtx();
-  const src = ctx.createBufferSource();
-  const g   = ctx.createGain();
-  src.buffer = buf;
-  g.gain.value = gain;
-  src.connect(g);
-  g.connect(ctx.destination);
-  src.start(ctx.currentTime + when);
 }
 
 // ── DOM ──────────────────────────────────────────────────────────────────────
@@ -201,61 +170,32 @@ function setCompactMode(compact) {
   compactBtn.title = compact ? '展开窗口' : '极简模式';
 }
 
-// ── 预加载音频（启动后静默加载，确保响铃时即时可用）────────────────────────────
-async function preloadSounds() {
-  try {
-    await ensureAudio();
-    await loadBuf('mokugyo', './sounds/mokugyo.wav');
-    await loadBuf('rin',     './sounds/rin.mp3');
-  } catch (_) {}
-}
-setTimeout(preloadSounds, 1000);  // 页面加载完 1 秒后静默预加载
-
 // ── 木鱼：开始计时连敲三声，间隔 1 秒 ───────────────────────────────────────────
-async function playWoodenFish() {
+function playWoodenFish() {
   if (!cfg.soundEnable) return;
-  try {
-    const ctx = await ensureAudio();
-    const buf = await loadBuf('mokugyo', './sounds/mokugyo.wav');
-    [0, 1, 2].forEach(i => playBuf(buf, i * 1.0, 0.9));
-  } catch (_) {}
+  [0, 1000, 2000].forEach(delay => {
+    setTimeout(() => playSound('./sounds/mokugyo.wav', 0.9), delay);
+  });
 }
 
 // ── 暂停短铃：轻敲一声木鱼（音量稍低）──────────────────────────────────────────
-async function playPauseTone() {
+function playPauseTone() {
   if (!cfg.soundEnable) return;
-  try {
-    const ctx = await ensureAudio();
-    const buf = await loadBuf('mokugyo', './sounds/mokugyo.wav');
-    if (!buf) return;
-    const src = ctx.createBufferSource();
-    const g   = ctx.createGain();
-    src.buffer = buf;
-    g.gain.value = 0.45;
-    src.connect(g); g.connect(ctx.destination);
-    src.start(ctx.currentTime);
-  } catch (_) {}
+  playSound('./sounds/mokugyo.wav', 0.45);
 }
 
 // ── 引磬：结束时一记，3 秒后淡出收尾 ────────────────────────────────────────────
-async function playRinBell() {
+function playRinBell() {
   if (!cfg.soundEnable) return;
-  try {
-    const ctx = await ensureAudio();
-    const buf = await loadBuf('rin', './sounds/rin.mp3');
-    if (!buf) return;
-    const src = ctx.createBufferSource();
-    const g   = ctx.createGain();
-    src.buffer = buf;
-    src.connect(g);
-    g.connect(ctx.destination);
-    const t = ctx.currentTime;
-    g.gain.setValueAtTime(1.0, t);
-    g.gain.setValueAtTime(1.0, t + 2.5);
-    g.gain.linearRampToValueAtTime(0, t + 3.0);
-    src.start(t);
-    src.stop(t + 3.0);
-  } catch (_) {}
+  const a = playSound('./sounds/rin.mp3', 1.0);
+  if (!a) return;
+  // 2.5 秒后开始每 50ms 衰减，约 0.5 秒降至 0
+  setTimeout(() => {
+    const fade = setInterval(() => {
+      a.volume = Math.max(0, a.volume - 0.05);
+      if (a.volume <= 0) { clearInterval(fade); a.pause(); }
+    }, 50);
+  }, 2500);
 }
 
 // ── Calendar sync ─────────────────────────────────────────────────────────────
