@@ -184,18 +184,19 @@ function playPauseTone() {
   playSound('./sounds/mokugyo.wav', 0.45);
 }
 
-// ── 引磬：结束时一记，3 秒后淡出收尾 ────────────────────────────────────────────
+// ── 引磬：结束时一记，自然延响后淡出 ────────────────────────────────────────────
+// rin.mp3 是 10 分钟长音频，铃声约在 3-5 秒后响起
+// 播放 15 秒后开始淡出（让余韵充分延响）
 function playRinBell() {
   if (!cfg.soundEnable) return;
   const a = playSound('./sounds/rin.mp3', 1.0);
   if (!a) return;
-  // 2.5 秒后开始每 50ms 衰减，约 0.5 秒降至 0
   setTimeout(() => {
     const fade = setInterval(() => {
-      a.volume = Math.max(0, a.volume - 0.05);
+      a.volume = Math.max(0, a.volume - 0.025);   // 慢淡出 ~2 秒
       if (a.volume <= 0) { clearInterval(fade); a.pause(); }
     }, 50);
-  }, 2500);
+  }, 15000);  // 15 秒后开始淡出
 }
 
 // ── Calendar sync ─────────────────────────────────────────────────────────────
@@ -408,12 +409,13 @@ $('btn-test-mokugyo').addEventListener('click', () => {
 $('btn-test-rin').addEventListener('click', () => {
   const a = playSound('./sounds/rin.mp3', 1.0);
   if (!a) return;
+  // 测试时听 12 秒（含铃声响起 + 余韵），然后淡出
   setTimeout(() => {
     const fade = setInterval(() => {
-      a.volume = Math.max(0, a.volume - 0.05);
+      a.volume = Math.max(0, a.volume - 0.025);
       if (a.volume <= 0) { clearInterval(fade); a.pause(); }
     }, 50);
-  }, 2500);
+  }, 12000);
 });
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
