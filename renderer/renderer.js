@@ -197,20 +197,20 @@ function playPauseTone() {
   playSound('./sounds/mokugyo.wav', 0.45);
 }
 
-// ── 引磬：跳过开头静音直接从铃声处播放，12 秒后淡出 ─────────────────────────────
+// ── 引磬：跳过静音，响 4 秒后用 1 秒淡出，总计 5 秒内结束 ──────────────────────
 function playRinBell() {
   if (!cfg.soundEnable) return;
   try {
     const a = new Audio('./sounds/rin.mp3');
     a.volume = 1.0;
-    a.currentTime = 2;    // 跳过前 2 秒静音，直接到铃声
+    a.currentTime = 2;    // 跳过前 2 秒静音
     a.play().catch(e => console.warn('引磬播放失败:', e));
     setTimeout(() => {
       const fade = setInterval(() => {
-        a.volume = Math.max(0, a.volume - 0.02);
+        a.volume = Math.max(0, a.volume - 0.05);   // 1 秒内淡出
         if (a.volume <= 0) { clearInterval(fade); a.pause(); }
       }, 50);
-    }, 12000);  // 12 秒后开始淡出
+    }, 4000);  // 4 秒响铃 + 1 秒淡出 = 共 5 秒
   } catch (e) { console.warn('引磬错误:', e); }
 }
 
