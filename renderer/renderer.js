@@ -170,11 +170,24 @@ function setCompactMode(compact) {
   compactBtn.title = compact ? '展开窗口' : '极简模式';
 }
 
-// ── 木鱼：开始计时连敲三声，间隔 1 秒 ───────────────────────────────────────────
+// ── 木鱼序列：存储 timeout + Audio，方便暂停时中断 ──────────────────────────────
+let _mokugyo = { timers: [], audios: [] };
+
+function stopWoodenFish() {
+  _mokugyo.timers.forEach(t => clearTimeout(t));
+  _mokugyo.audios.forEach(a => { try { a.pause(); } catch (_) {} });
+  _mokugyo.timers = []; _mokugyo.audios = [];
+}
+
 function playWoodenFish() {
   if (!cfg.soundEnable) return;
+  stopWoodenFish();   // 确保无残留
   [0, 1800, 3600].forEach(delay => {
-    setTimeout(() => playSound('./sounds/mokugyo.wav', 0.9), delay);
+    const t = setTimeout(() => {
+      const a = playSound('./sounds/mokugyo.wav', 0.9);
+      if (a) _mokugyo.audios.push(a);
+    }, delay);
+    _mokugyo.timers.push(t);
   });
 }
 
@@ -295,7 +308,8 @@ function togglePlay() {
     appEl.classList.remove('running');
     setPlayIcon(false);
     clearInterval(timerId); timerId = null;
-    playPauseTone();                           // 暂停一声轻鸣
+    stopWoodenFish();   // 取消未播的木鱼 + 停止正在响的
+    playPauseTone();    // 暂停轻鸣
   }
   updateSaveBtn();
   notifyTray();
