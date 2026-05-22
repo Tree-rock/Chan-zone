@@ -23,6 +23,9 @@ function makeTrayIcon() {
   return img;
 }
 
+// 允许计时器结束等无手势场景自动播放音频
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
 app.whenReady().then(() => {
   createWindow();
   createTray();

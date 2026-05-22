@@ -465,6 +465,11 @@ html, body {
 .test-btn:hover  { background: rgba(26,96,138,0.13); }
 .test-btn:active { transform: scale(0.93); }
 
+/* 音效测试按钮行 */
+.sound-test-row {
+  display: flex; gap: 8px; padding: 0 2px;
+}
+
 /* ── Toast ── */
 .toast {
   position: absolute; bottom: 14px; left: 50%;
@@ -518,20 +523,20 @@ html, body {
   display: none !important;
 }
 
-/* ── Mode label (session-label now acts as mode indicator) ── */
+/* ── Mode label ── */
 #app.compact .session-label {
   display: block;
   position: static;
   font-family: 'EB Garamond', serif;
-  font-size: 12px; font-style: normal;
+  font-size: 11.5px; font-style: italic;
   letter-spacing: 4px;
   color: var(--ink-3);
-  opacity: 0.7;
-  margin: 22px 0 0;
+  opacity: 0.6;
+  margin: 28px 0 0;
   text-align: center;
 }
 
-/* ── Clock face: flow naturally ── */
+/* ── Clock face ── */
 #app.compact .clock-face {
   width: 100%;
   height: auto;
@@ -542,56 +547,63 @@ html, body {
   align-items: center;
 }
 
-/* ── Time display: big and centered ── */
+/* ── Time display ── */
 #app.compact .time-display {
   position: static;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  margin: 6px 0 0;
+  gap: 0;
+  margin: 8px 0 0;
   -webkit-app-region: drag;
 }
 #app.compact .time-num {
-  font-size: 72px;
+  font-size: 70px;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
   line-height: 1;
   color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
 }
 
-/* ── Dots: pill + circles, Flow style ── */
+/* ── Dots: pill + circles ── */
 #app.compact .dots {
   display: flex;
-  gap: 8px;
-  margin: 22px 0 0;
+  gap: 7px;
+  margin: 24px 0 0;
   align-items: center;
 }
 #app.compact .dot {
-  width: 7px; height: 7px;
+  width: 6px; height: 6px;
   border-radius: 50%;
+  background: rgba(160,130,80,0.18);
+  transition: background 0.4s, width 0.3s var(--spring), border-radius 0.3s var(--spring);
 }
 #app.compact .dot.current {
-  width: 22px; height: 7px;
-  border-radius: 4px;
+  width: 20px; height: 6px;
+  border-radius: 3px;
   border: none;
-  background: rgba(26,96,138,0.48);
+  background: rgba(26,96,138,0.42);
   transform: none;
+  animation: none;
 }
 #app.compact .dot.done {
-  background: rgba(26,96,138,0.28);
+  background: rgba(26,96,138,0.25);
 }
 
-/* ── Controls: only play button, centered ── */
+/* ── Controls: only play button ── */
 #app.compact .controls {
   display: flex;
   justify-content: center;
-  margin: 24px 0 0;
+  margin: 26px 0 28px;
   max-height: none;
   opacity: 1;
   pointer-events: auto;
 }
 #app.compact .play-btn {
-  width: 54px; height: 54px;
+  width: 56px; height: 56px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 4px 16px rgba(45,32,15,0.12);
 }

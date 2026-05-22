@@ -401,5 +401,20 @@ saveBtnEl.addEventListener('click', async () => {
   updateSaveBtn();
 });
 
+// ── 音效测试按钮 ───────────────────────────────────────────────────────────────
+$('btn-test-mokugyo').addEventListener('click', () => {
+  playSound('./sounds/mokugyo.wav', 0.9);
+});
+$('btn-test-rin').addEventListener('click', () => {
+  const a = playSound('./sounds/rin.mp3', 1.0);
+  if (!a) return;
+  setTimeout(() => {
+    const fade = setInterval(() => {
+      a.volume = Math.max(0, a.volume - 0.05);
+      if (a.volume <= 0) { clearInterval(fade); a.pause(); }
+    }, 50);
+  }, 2500);
+});
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 setMode('focus');
