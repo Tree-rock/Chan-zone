@@ -111,12 +111,12 @@ ipcMain.on('window-compact-toggle', () => {
   isCompact = !isCompact;
 
   if (isCompact) {
-    // 极简模式：宽 300，高 88（标题栏 30 + 时间数字区 58）
-    mainWindow.setMinimumSize(300, 100);
-    mainWindow.setMaximumSize(520, 100);   // 允许横向拉宽，纵向锁定
-    setTimeout(() => mainWindow?.setSize(300, 100, true), 60);
+    // Flow 风格迷你窗口
+    mainWindow.setMinimumSize(240, 300);
+    mainWindow.setMaximumSize(380, 520);
+    setTimeout(() => mainWindow?.setSize(280, 360, true), 60);
   } else {
-    // 恢复正常：先解开 max 锁，再设尺寸，再恢复自由缩放范围
+    // 恢复正常
     mainWindow.setMinimumSize(280, 420);
     mainWindow.setMaximumSize(520, 700);
     mainWindow.setSize(340, 500, true);

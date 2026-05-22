@@ -483,62 +483,115 @@ html, body {
 .toast.green { background: rgba(50,75,40,0.88); }
 .toast.red   { background: rgba(120,42,26,0.88); }
 
-/* ── Compact floating timer ── */
+/* ══ Compact: Flow-inspired mini window ══ */
 #app.compact {
-  --radius: 14px;
-  justify-content: center;
+  --radius: 18px;
+  justify-content: flex-start;
+  align-items: center;
 }
+
+/* ── Titlebar: minimal strip ── */
 #app.compact .titlebar {
-  height: 28px;
-  padding: 0 9px 0 11px;
-  border-bottom-color: transparent;   /* 去掉分割线，避免视觉干扰 */
+  height: 36px;
+  padding: 0 10px;
+  border-bottom: 1px solid rgba(200,170,100,0.10);
+  flex-shrink: 0;
 }
 #app.compact .brand span,
 #app.compact #btn-settings,
-#app.compact #btn-min,
-#app.compact .settings-panel {
+#app.compact #btn-min {
   display: none !important;
 }
+
+/* ── Hide elements not needed ── */
 #app.compact .task-area,
 #app.compact .mode-tabs,
 #app.compact .duration-row,
-#app.compact .controls,
 #app.compact .save-btn,
-#app.compact .dots,
 #app.compact .quote,
-#app.compact .quote-author {
-  opacity: 0 !important;
-  max-height: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  pointer-events: none;
-}
+#app.compact .quote-author,
+#app.compact .settings-panel,
 #app.compact .clock-svg,
 #app.compact .clock-inner,
-#app.compact .session-label {
-  display: none;   /* 彻底移出文档流，不再挤占高度 */
+#app.compact #btn-reset,
+#app.compact #btn-skip {
+  display: none !important;
 }
+
+/* ── Mode label (session-label now acts as mode indicator) ── */
+#app.compact .session-label {
+  display: block;
+  position: static;
+  font-family: 'EB Garamond', serif;
+  font-size: 12px; font-style: normal;
+  letter-spacing: 4px;
+  color: var(--ink-3);
+  opacity: 0.7;
+  margin: 22px 0 0;
+  text-align: center;
+}
+
+/* ── Clock face: flow naturally ── */
 #app.compact .clock-face {
-  flex: 1;                      /* 填满标题栏以下的所有空间，比 calc 更稳定 */
   width: 100%;
   height: auto;
   margin: 0;
-  position: relative;
-  -webkit-app-region: drag;
-}
-#app.compact .time-display {
-  position: absolute;           /* 保持绝对定位，填满 clock-face */
-  inset: 0;
+  position: static;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Time display: big and centered ── */
+#app.compact .time-display {
+  position: static;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  gap: 2px;
+  margin: 6px 0 0;
   -webkit-app-region: drag;
 }
 #app.compact .time-num {
-  font-size: 34px;
-  letter-spacing: 0.08em;
+  font-size: 72px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   line-height: 1;
+  color: var(--ink);
+}
+
+/* ── Dots: pill + circles, Flow style ── */
+#app.compact .dots {
+  display: flex;
+  gap: 8px;
+  margin: 22px 0 0;
+  align-items: center;
+}
+#app.compact .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+#app.compact .dot.current {
+  width: 22px; height: 7px;
+  border-radius: 4px;
+  border: none;
+  background: rgba(26,96,138,0.48);
+  transform: none;
+}
+#app.compact .dot.done {
+  background: rgba(26,96,138,0.28);
+}
+
+/* ── Controls: only play button, centered ── */
+#app.compact .controls {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 0;
+  max-height: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+#app.compact .play-btn {
+  width: 54px; height: 54px;
 }
