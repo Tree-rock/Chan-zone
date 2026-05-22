@@ -173,7 +173,7 @@ function setCompactMode(compact) {
 // ── 木鱼：开始计时连敲三声，间隔 1 秒 ───────────────────────────────────────────
 function playWoodenFish() {
   if (!cfg.soundEnable) return;
-  [0, 1000, 2000].forEach(delay => {
+  [0, 1800, 3600].forEach(delay => {
     setTimeout(() => playSound('./sounds/mokugyo.wav', 0.9), delay);
   });
 }
