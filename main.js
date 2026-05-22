@@ -47,16 +47,12 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 340,
     height: 500,
-    minWidth: 280,
-    minHeight: 420,
-    maxWidth: 520,
-    maxHeight: 700,
     x: width - 360,
     y: 60,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    resizable: true,
+    resizable: false,       // 固定尺寸，禁止用户拖拽缩放
     vibrancy: 'under-window',
     visualEffectState: 'active',
     webPreferences: {
@@ -114,15 +110,9 @@ ipcMain.on('window-compact-toggle', () => {
   isCompact = !isCompact;
 
   if (isCompact) {
-    // Flow 风格迷你窗口
-    mainWindow.setMinimumSize(240, 300);
-    mainWindow.setMaximumSize(380, 520);
-    setTimeout(() => mainWindow?.setSize(280, 360, true), 60);
+    mainWindow.setSize(280, 360, true);   // 固定迷你尺寸
   } else {
-    // 恢复正常
-    mainWindow.setMinimumSize(280, 420);
-    mainWindow.setMaximumSize(520, 700);
-    mainWindow.setSize(340, 500, true);
+    mainWindow.setSize(340, 500, true);   // 固定正常尺寸
   }
 
   mainWindow.webContents.send('window-compact-changed', isCompact);
